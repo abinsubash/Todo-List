@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Todo List</title>
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.4.0/fonts/remixicon.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/todo.css">
+    <link rel="stylesheet" href="/css/profile.css">
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.4.0/fonts/remixicon.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Flatpickr CSS for the date and time pickers -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+</head>
+
+<body>
+    <header>
+        <a href="#" class="logo">
+            <img src="https://via.placeholder.com/120x40" alt="Funnect Logo">
+        </a>
+        <ul class="navlist">
+            <li><a href="/">Home</a></li>
+            <li><a href="/todo">Todo</a></li>
+            <li><a href="#services">Connect</a></li>
+            <li><a href="/profile">Profile</a></li>
+            <li><a href="#Aboutme">About</a></li>
+        </ul>
+        <div class="right-content">
+            <div class="notification-icon">
+                <i class='bx bx-bell'></i>
+                <span class="notification-badge">3</span>
+            </div>
+            <% if(user) { %>
+                <a href="/logout" class="nav-btn">Logout</a>
+            <% } else { %>
+                <a href="/login" class="nav-btn">Sign In</a>
+            <% } %>
+            <div class="bx bx-menu" id="menu-icon"></div>
+        </div>
+    </header>

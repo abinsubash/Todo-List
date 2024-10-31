@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/otp.css">
+    <title>otp</title>
+</head>
+
+<body>
+    <div class="otp-card">
+        <h1>OTP Verification</h1>
+        <p>Code has been send to Your email </p>
+        <form action="" id="otp_form">
+            <div class="otp-card-inputs">
+                <input type="text" name="num1" id="num1" maxlength="1" autofocus>
+                <input type="text" name="num2" id="num2" maxlength="1">
+                <input type="text" name="num3" id="num3" maxlength="1">
+                <input type="text" name="num4" id="num4" maxlength="1">
+            </div>
+            <small id="otp_error" style="color: red;"></small>
+            <small id="timer" style=" color: rgb(255, 0, 0);">Otp Expired in:30</small>
+            <small style="color: green;" id="resend_message"></small>
+            <p>Did't get the otp <a href="#" onclick="resendOtp(event)">Resend</a> </p>
+            <button type="submit"> Verify</button>
+        </form>
+
+    </div>
+    <script src="/js/otp.js"></script>
+</body>
+
+</html>
+<script>
+    let timerLeft = 30;
+    const timerElement = document.getElementById('timer')
+    const timeIntervel = setInterval(() => {
+        if (timerLeft <= 0) {
+            clearInterval(timeIntervel)
+            timerElement.innerHTML = "OTP Expired"
+        } else {
+            timerElement.innerHTML = `Otp Expired in :${timerLeft}`
+            timerLeft--
+        }
+    }, 1000)
+    document.addEventListener('DOMContentLoaded', () => {
+
+        document.getElementById('otp_form').addEventListener('submit', async (event) => {
+            event.preventDefault()
+            const val1 = document.getElementById('num1').value.trim()
+            const val2 = document.getElementById('num2').value.trim()
+            const val3 = document.getElementById('num3').value.trim()
+            const val4 = document.getElementById('num4').value.trim()
+            const otp_error = document.getElementById('otp_error')
+            otp_error.innerHTML = ""
+            const entered_otp = Number(" " + val1 + val2 + val3 + val4)
+            const response = await fetch('/otp', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ entered_otp })
+            })
+            const data = await response.json()
+            if (!data.success) {
+                otp_error.innerHTML = data.message
+            }
+            if (data.success) {
+                location.href = '/login'
+            }
+        })
+    });
+    const resend_message = document.getElementById("resend_message")
+    resend_message.innerHTML = ""
+    async function resendOtp(event) {
+        event.preventDefault()
+        const response = await fetch('/resend_otp', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        const data = await response.json();
+        if (data.success) {
+            resend_message.innerHTML = "Otp send successfully"
+            timerLeft = 30
+            setTimeout(()=>{
+                resend_message.innerHTML = ""
+            },3000)
+        } else {
+            timerElement.innerHTML = "Otp resend failed"
+        }
+    }
+
+</script>

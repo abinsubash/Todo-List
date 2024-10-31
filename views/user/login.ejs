@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/login.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="wrapper">
+            <form action="" id="login_form">
+                <h1>Login</h1>
+                <div class="input-box">
+                    <input type="text" id="email_username" placeholder="Username or Email">
+                    <i class='bx bxs-user'></i>
+                    <small id="email_usernameError" style="color: red;"></small>
+                </div>
+                <div class="input-box">
+                    <input type="password" id="password" placeholder="Password">
+                    <i class='bx bxs-lock-alt'></i>
+                    <small id="password_error" style="color: red;"></small>
+                </div>
+                <div class="remember-forgot">
+                    <label> <input type="checkbox">
+                        Remember me
+                    </label>
+                    <a href="">Forgot Password ?</a>
+                </div>
+                <button type="submit" class="btn"> Login</button>
+                <div class="register-link">
+                    <p>Don't have an account ? <a href="/signup">Register </a> </p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+
+</html>
+<script>
+    document.getElementById('login_form').addEventListener('submit', async (event) => {
+        event.preventDefault()
+        const email_username = document.getElementById("email_username").value.trim()
+        const password = document.getElementById('password').value.trim()
+        const user_name_regex = /^[a-zA-Z0-9_]{4,16}$/;
+        const email_regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+        const password_regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/;
+        const email_usernameError = document.getElementById('email_usernameError')
+        const password_error = document.getElementById('password_error')
+        email_usernameError.innerHTML = ''
+        password_error.innerHTML = ''
+        let isValid = true
+        if (email_username.includes('gmail.com')) {
+            if (!email_regex.test(email_username)) {
+                isValid = false;
+                email_usernameError.innerHTML = "Please enter a valid Gmail address.";
+            }
+        } else {
+            if (!user_name_regex.test(email_username)) {
+                isValid = false;
+                email_usernameError.innerHTML = "Please enter a valid username.";
+            }
+        }
+        if (!isValid) {
+            return
+        } else {
+            const responce = await fetch('login', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ email_username, password })
+            })
+            const data = await responce.json()
+            if(!data.success&&data.message=="User not exist"){
+                email_usernameError.innerHTML=data.message
+            }else if(!data.success&&data.message=="Wrong Password"){
+                password_error.innerHTML=data.message
+            }
+            if(data.success){
+                location.href='/'
+            }
+        }
+
+    })
+</script>

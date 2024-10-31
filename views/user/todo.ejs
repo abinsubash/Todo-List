@@ -1,0 +1,259 @@
+<%- include('../partials/header') -%>
+
+    <section class="todo-container">
+        <div class="todo-header">
+            <h1>Manage Your Tasks</h1>
+            <p>Stay organized and boost your productivity</p>
+        </div>
+
+        <div class="todo-filters">
+            <button class="filter-btn active">All</button>
+            <button class="filter-btn">Active</button>
+            <button class="filter-btn">Completed</button>
+        </div>
+
+        <div class="todo-input-container">
+            <input type="text" class="todo-input" placeholder="Add a new task...">
+            <input type="text" class="date-time-input" placeholder="Select Date & Time">
+            <button class="timer-modal-btn timer-btn">Set Timer</button>
+            <button class="add-btn">Add Task</button>
+        </div>
+
+        <div class="todo-list">
+            <!-- Todo items will be added here -->
+        </div>
+    </section>
+
+    <!-- Timer Modal -->
+    <div class="modal" id="timerModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Set Timer</h3>
+            </div>
+            <div class="timer-inputs">
+                <div class="timer-input-group">
+                    <label>Hours</label>
+                    <input type="number" id="hoursInput" min="0" max="23" value="0">
+                </div>
+                <div class="timer-input-group">
+                    <label>Minutes</label>
+                    <input type="number" id="minutesInput" min="0" max="59" value="0">
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-btn set-timer-btn">Set Timer</button>
+                <button class="modal-btn cancel-timer-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        let currentTimer = null;
+
+        const modal = document.getElementById('timerModal');
+        const timerModalBtn = document.querySelector('.timer-modal-btn');
+        const setTimerBtn = document.querySelector('.set-timer-btn');
+        const cancelTimerBtn = document.querySelector('.cancel-timer-btn');
+        const hoursInput = document.getElementById('hoursInput');
+        const minutesInput = document.getElementById('minutesInput');
+
+        const todoInput = document.querySelector('.todo-input');
+        const dateTimeInput = document.querySelector('.date-time-input');
+        const addBtn = document.querySelector('.add-btn');
+        const todoList = document.querySelector('.todo-list');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+
+        // Modal functions
+        timerModalBtn.onclick = () => modal.style.display = 'block';
+        cancelTimerBtn.onclick = () => modal.style.display = 'none';
+
+        window.onclick = (e) => {
+            if (e.target === modal) modal.style.display = 'none';
+        }
+
+        setTimerBtn.onclick = () => {
+            const hours = parseInt(hoursInput.value) || 0;
+            const minutes = parseInt(minutesInput.value) || 0;
+            currentTimer = `${hours}h ${minutes}m`;
+            modal.style.display = 'none';
+        }
+
+        // Add todo function
+        // addBtn.addEventListener('click', () => {
+        //     const todoText = todoInput.value.trim();
+        //     const dateTime = dateTimeInput.value;
+        //     const timer = currentTimer;
+
+        //     if (todoText) {
+        //         const todoItem = document.createElement('div');
+        //         todoItem.className = 'todo-item';
+        //         todoItem.innerHTML = `
+        //         <input type="checkbox" class="todo-checkbox">
+        //         <span class="todo-text">${todoText}</span>
+        //         <span class="todo-date-time">${dateTime ? "Date: " + dateTime : ""}</span>
+        //         <div class="todo-actions">
+        //             <span class="timer-display">${timer ? "Timer: " + timer : ""}</span>
+        //             <button class="todo-btn play-pause play"><i class="bx bx-play"></i></button>
+        // <button class="todo-btn edit"><i class="bx bx-edit"></i></button>
+        // <button class="todo-btn delete"><i class="bx bx-trash"></i></button>
+        //         </div>
+        //     `;
+        //         todoList.appendChild(todoItem);
+
+        //         // Reset inputs
+        //         todoInput.value = '';
+        //         dateTimeInput.value = '';
+        //         currentTimer = null;
+        //         hoursInput.value = '0';
+        //         minutesInput.value = '0';
+        //     }
+        // });
+
+        addBtn.addEventListener('click', async () => {
+            const todoText = todoInput.value.trim();
+            const dateTime = dateTimeInput.value;
+            const timer = currentTimer;
+            console.log(todoText,dateTime,timer)
+            if (todoText) {
+                const todoData = {
+                    list: todoText,
+                    date: dateTime,
+                    timer: (parseInt(hoursInput.value) || 0) * 3600000 + (parseInt(minutesInput.value) || 0) * 60000  // Convert to milliseconds
+                };
+
+                try {
+                    // Send data to the backend
+                    const response = await fetch('/api/todo', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(todoData)
+                    });
+
+                    if (response.ok) {
+                        const savedItem = await response.json();
+
+                        // Update the UI with the new item
+                        const todoItem = document.createElement('div');
+                        todoItem.className = 'todo-item';
+                        todoItem.innerHTML = `
+                    <input type="checkbox" class="todo-checkbox">
+                    <span class="todo-text">${savedItem.list}</span>
+                    <span class="todo-date-time">Date: ${new Date(savedItem.date).toLocaleDateString()}</span>
+                    <div class="todo-actions">
+                        <span class="timer-display">Timer: ${hoursInput.value}h ${minutesInput.value}m</span>
+                        <button class="todo-btn edit"><i class="bx bx-edit"></i></button>
+                        <button class="todo-btn delete"><i class="bx bx-trash"></i></button>
+                    </div>
+                `;
+                        todoList.appendChild(todoItem);
+
+                        // Reset inputs
+                        todoInput.value = '';
+                        dateTimeInput.value = '';
+                        currentTimer = null;
+                        hoursInput.value = '0';
+                        minutesInput.value = '0';
+                    } else {
+                        console.error('Failed to save todo item');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            }
+        });
+
+        todoList.addEventListener('click', (e) => {
+            const target = e.target;
+            const todoItem = target.closest('.todo-item');
+
+            if (!todoItem) return;
+
+            if (target.classList.contains('todo-checkbox')) {
+                todoItem.classList.toggle('completed');
+            } else if (target.closest('.delete')) {
+                todoItem.remove();
+            } else if (target.closest('.edit')) {
+                const todoText = todoItem.querySelector('.todo-text');
+                const newText = prompt('Edit task:', todoText.textContent);
+                if (newText) {
+                    todoText.textContent = newText;
+                }
+            }
+        });
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const filterType = btn.textContent.toLowerCase();
+                const todoItems = document.querySelectorAll('.todo-item');
+
+                todoItems.forEach(item => {
+                    switch (filterType) {
+                        case 'all':
+                            item.style.display = 'flex';
+                            break;
+                        case 'active':
+                            item.style.display = item.classList.contains('completed') ? 'none' : 'flex';
+                            break;
+                        case 'completed':
+                            item.style.display = item.classList.contains('completed') ? 'flex' : 'none';
+                            break;
+                    }
+                });
+            });
+        });
+
+        flatpickr(".date-time-input", {
+            dateFormat: "Y-m-d",
+            minDate: "today"
+        });
+
+        todoList.addEventListener('click', (e) => {
+    const target = e.target;
+    const todoItem = target.closest('.todo-item');
+    
+    if (!todoItem) return;
+
+    // Check for play/pause button
+    if (target.closest('.play-pause')) {
+        const playPauseBtn = target.closest('.play-pause');
+        const icon = playPauseBtn.querySelector('i');
+
+        if (playPauseBtn.classList.contains('play')) {
+            // Switch to pause mode
+            playPauseBtn.classList.remove('play');
+            playPauseBtn.classList.add('pause');
+            icon.classList.replace('bx-play', 'bx-pause');
+            
+            // Start the timer logic here if needed
+            console.log("Timer started...");
+        } else {
+            // Switch to play mode
+            playPauseBtn.classList.remove('pause');
+            playPauseBtn.classList.add('play');
+            icon.classList.replace('bx-pause', 'bx-play');
+
+            // Pause the timer logic here if needed
+            console.log("Timer paused...");
+        }
+    } else if (target.classList.contains('todo-checkbox')) {
+        todoItem.classList.toggle('completed');
+    } else if (target.closest('.delete')) {
+        todoItem.remove();
+    } else if (target.closest('.edit')) {
+        const todoText = todoItem.querySelector('.todo-text');
+        const newText = prompt('Edit task:', todoText.textContent);
+        if (newText) {
+            todoText.textContent = newText;
+        }
+    }
+});
+    </script>
+    </body>
+
+    </html>

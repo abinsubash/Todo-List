@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/signup.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="wrapper">
+            <form action="" id="signup_form">
+                <h1>Signup</h1>
+                <div class="input-box">
+                    <input type="text" placeholder="Name" name="name" id="name">
+                    <i class='bx bxs-user'></i>
+                    <small id="name_error" style="color: red;"></small>
+                </div>
+                <div class="input-box">
+                    <input type="text" placeholder="Username" name="user_name" id="user_name">
+                    <i class='bx bxs-user'></i>
+                    <small id="user_name_error" style="color: red;"></small>
+                </div>
+                <div class="input-box">
+                    <input type="email" placeholder="Email" name="email" id="email">
+                    <i class='bx bxs-envelope'></i>
+                    <small id="email_error" style="color: red;" style="color: red;"></small>
+                </div>
+                <div class="input-box">
+                    <input type="password" placeholder="Password" name="password" id="password">
+                    <i class='bx bxs-show' id="togglePassword" style="cursor: pointer;"></i>
+                    <small id="password_error" style="color: red;"></small>
+                </div>
+                <div class="input-box">
+                    <input type="password" placeholder="Confirm Password" name="confirm_password" id="confirm_password">
+                    <i class='bx bxs-lock-alt'></i>
+                    <small id="confirm_password_error" style="color: red;"></small>
+                </div>
+                <button type="submit" class="btn"> signup </button>
+                <div class="register-link">
+                    <p>You already have an accout ? <a href="/login">Login </a> </p>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+</body>
+
+</html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+<script>
+    const togglePassword = document.querySelector('#togglePassword');
+    const passwordInput = document.querySelector('#password');
+    togglePassword.addEventListener('click', function (e) {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+        this.classList.toggle('bxs-hide');
+        this.classList.toggle('bxs-show');
+    });
+
+    document.getElementById('signup_form').addEventListener('submit', async (event) => {
+        event.preventDefault()
+
+        const name = document.getElementById('name').value.trim();
+        const user_name = document.getElementById('user_name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value.trim();
+        const confirm_password = document.getElementById('confirm_password').value.trim();
+        const name_regex = /^[a-zA-Z\s]{2,30}$/;
+        const user_name_regex = /^[a-zA-Z0-9_]{4,16}$/;
+        const email_regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+        const password_regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/;
+        let isValid = true
+        const name_error = document.getElementById('name_error')
+        const user_name_error = document.getElementById('user_name_error')
+        const email_error = document.getElementById('email_error')
+        const password_error = document.getElementById('password_error')
+        const confirm_password_error = document.getElementById('confirm_password_error')
+        name_error.innerHTML = ""
+        user_name_error.innerHTML = ''
+        email_error.innerHTML = ''
+        password_error.innerHTML = ''
+        confirm_password_error.innerHTML = ''
+        if (!name_regex.test(name)) {
+            name_error.innerHTML = "Enter a valid name"
+            isValid = false
+        }
+        if (!user_name_regex.test(user_name)) {
+            user_name_error.innerHTML = "Enter a valid Username"
+            isValid = false
+        }
+        if (!email_regex.test(email)) {
+            email_error.innerHTML = "Enter a valid Email"
+            isValid = false
+        }
+        if (!password_regex.test(password)) {
+            password_error.innerHTML = "Enter a valid Password"
+            isValid = false
+        }
+        if (!confirm_password === password) {
+            email_error.innerHTML = "Password is not matching"
+            isValid = false
+        }
+        if (!isValid) {
+            return
+        }
+
+        const responce = await fetch("/signupForm", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                name,
+                user_name,
+                password,
+                email
+            })
+        })
+        const data = await responce.json()
+        if (!data.success && data.message == "Username already exist.please Enter another username") {
+            user_name_error.innerHTML = "Username already exist"
+        } else if (!data.success && data.message == "Email already exist") {
+            email_error.innerHTML = data.message
+        } else if (!data.success && data.message == "Something went wrong") {
+            Toastify({
+                text: data.message,
+                duration: 5000,
+                backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+                gravity: "top", 
+                position: "right", 
+                stopOnFocus: true, 
+                className: "custom-toast-error" 
+            }).showToast();
+        }
+            if (data.success) {
+                location.href = "/otp"
+            }
+        })
+
+</script>

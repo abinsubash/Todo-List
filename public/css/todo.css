@@ -1,0 +1,318 @@
+
+        .todo-container {
+            min-height: 100vh;
+            padding: 120px 7% 80px;
+            background: linear-gradient(rgba(12, 12, 12, 0.8), rgba(12, 12, 12, 0.8)),
+                        url("https://img.freepik.com/free-photo/be-afraid-be-awesome_53876-120672.jpg?t=st=1730288618~exp=1730292218~hmac=47dc9270b05a24c74c3ff26e0c587cf0c746e5dd9ebea82c5f4230eafb4e4227&w=900");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .todo-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .todo-header h1 {
+            font-size: 2.5rem;
+            color: var(--text-color);
+            margin-bottom: 20px;
+        }
+
+        .todo-header p {
+            color: #ddd;
+            font-size: 1.1rem;
+        }
+
+        .todo-input-container {
+            max-width: 800px;
+            margin: 0 auto 40px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .todo-input,
+        .timer-input,
+        .start-date-input {
+            padding: 10px 15px;
+            border: 2px solid var(--main-color);
+            border-radius: 8px;
+            background: rgba(26, 26, 26, 0.8);
+            color: var(--text-color);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        .todo-input {
+            flex: 2;
+        }
+        
+        .timer-input, 
+        .start-date-input {
+            flex: 1;
+        }
+        
+        .timer-input:focus, 
+        .start-date-input:focus {
+            outline: none;
+            border-color: var(--text-color);
+            background: rgba(26, 26, 26, 0.95);
+        }
+        .timer-btn,
+        .add-btn {
+            padding: 15px 30px;
+            background: var(--main-color);
+            border: none;
+            border-radius: 8px;
+            color: var(--text-color);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .timer-btn:hover,
+        .add-btn:hover {
+            transform: translateY(-3px);
+            background: #987548;
+        }
+
+        .todo-list {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .todo-item {
+            background: rgba(26, 26, 26, 0.8);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: var(--transition);
+        }
+
+        .todo-item:hover {
+            transform: translateX(5px);
+            background: rgba(26, 26, 26, 0.95);
+        }
+
+        .todo-text {
+            flex: 1;
+            color: var(--text-color);
+        }
+
+        .todo-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .todo-btn {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+
+        .todo-btn:hover {
+            color: var(--main-color);
+        }
+
+        .todo-btn.complete {
+            color: #4CAF50;
+        }
+
+        .todo-btn.delete {
+            color: #f44336;
+        }
+
+        .todo-filters {
+            max-width: 800px;
+            margin: 0 auto 30px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .filter-btn {
+            padding: 8px 20px;
+            background: transparent;
+            border: 2px solid var(--main-color);
+            border-radius: 20px;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .filter-btn.active {
+            background: var(--main-color);
+        }
+
+        .filter-btn:hover {
+            background: var(--main-color);
+        }
+
+        @media (max-width: 768px) {
+            .todo-container {
+                padding: 100px 4% 60px;
+            }
+
+            .todo-input-container {
+                flex-direction: column;
+            }
+
+            .todo-filters {
+                flex-wrap: wrap;
+            }
+        }
+
+        .date-time-input, .timer-input {
+           padding: 15px 10px;
+           border: 2px solid var(--main-color);
+           border-radius: 8px;
+           background: rgba(26, 26, 26, 0.8);
+           color: var(--text-color);
+           font-size: 1rem;
+           transition: var(--transition);
+           cursor: pointer;
+       }
+       .date-time-input:focus, .timer-input:focus {
+           outline: none;
+           border-color: var(--text-color);
+           background: rgba(26, 26, 26, 0.95);
+       }
+       
+       .timer-input {
+        width: 10%;
+        padding: 10px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    .date-time-input{
+        width: 20%;
+    }
+
+
+    :root {
+        --main-color: #B47C4B;
+        --text-color: #fff;
+        --transition: all 0.3s ease;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    /* Existing styles remain the same */
+    .todo-container {
+        min-height: 100vh;
+        padding: 120px 7% 80px;
+        background: linear-gradient(rgba(12, 12, 12, 0.8), rgba(12, 12, 12, 0.8)),
+                    url("https://img.freepik.com/free-photo/be-afraid-be-awesome_53876-120672.jpg");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+    }
+
+    /* Your existing styles here */
+
+    /* New styles for modal and checkbox */
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+    }
+
+    .modal-content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #1a1a1a;
+        padding: 30px;
+        border-radius: 12px;
+        min-width: 300px;
+    }
+
+    .modal-header {
+        color: var(--text-color);
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .timer-inputs {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .timer-input-group {
+        flex: 1;
+    }
+
+    .timer-input-group label {
+        display: block;
+        color: var(--text-color);
+        margin-bottom: 5px;
+    }
+
+    .timer-input-group input {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid var(--main-color);
+        border-radius: 4px;
+        background: rgba(26, 26, 26, 0.8);
+        color: var(--text-color);
+    }
+
+    .modal-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .modal-btn {
+        padding: 8px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: var(--transition);
+    }
+
+    .set-timer-btn {
+        background: var(--main-color);
+        color: var(--text-color);
+    }
+
+    .cancel-timer-btn {
+        background: #666;
+        color: var(--text-color);
+    }
+
+    .todo-checkbox {
+        margin-right: 15px;
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+    }
+
+    .completed .todo-text {
+        text-decoration: line-through;
+        opacity: 0.7;
+    }
+
+    .timer-display {
+        color: var(--text-color);
+        font-size: 0.9rem;
+        margin-left: 10px;
+    }

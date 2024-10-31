@@ -1,0 +1,395 @@
+<%- include('../partials/header') -%>
+
+    <div class="profile-container">
+        <div class="profile-header">
+            <div class="profile-stats">
+                <div class="stat-item">
+                    <div class="stat-number">45</div>
+                    <div class="stat-label">Completed Tasks</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">12</div>
+                    <div class="stat-label">Pending Tasks</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">57</div>
+                    <div class="stat-label">Total Tasks</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">78%</div>
+                    <div class="stat-label">Completion Rate</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-main">
+            <div class="profile-sidebar">
+                <div class="profile-avatar-container">
+                    <div class="profile-avatar">
+                        <img src="/api/placeholder/150/150" alt="Profile Picture">
+                    </div>
+                    <button class="edit-avatar-btn">
+                        <i class='bx bx-pencil'></i>
+                    </button>
+                </div>
+                <div class="profile-info">
+                    <h1>John Doe</h1>
+                    <div class="profile-title">Senior Software Developer</div>
+                    <div class="profile-social">
+                        <div class="social-link-container">
+                            <a href="#" class="social-icon" id="githubLink">
+                                <i class='bx bxl-github'></i>
+                            </a>
+                            <button class="edit-social-btn" data-social="github">
+                                <i class='bx bx-pencil'></i>
+                            </button>
+                        </div>
+                        <div class="social-link-container">
+                            <a href="#" class="social-icon" id="linkedinLink">
+                                <i class='bx bxl-linkedin'></i>
+                            </a>
+                            <button class="edit-social-btn" data-social="linkedin">
+                                <i class='bx bx-pencil'></i>
+                            </button>
+                        </div>
+                        <div class="social-link-container">
+                            <a href="#" class="social-icon" id="twitterLink">
+                                <i class='bx bxl-twitter'></i>
+                            </a>
+                            <button class="edit-social-btn" data-social="twitter">
+                                <i class='bx bx-pencil'></i>
+                            </button>
+                        </div>
+                        <div class="social-link-container">
+                            <a href="#" class="social-icon" id="instagramLink">
+                                <i class='bx bxl-instagram'></i>
+                            </a>
+                            <button class="edit-social-btn" data-social="instagram">
+                                <i class='bx bx-pencil'></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-content">
+                <div class="content-section">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <i class='bx bx-briefcase-alt-2'></i>
+                            About Me
+                        </h2>
+                        <button class="edit-about-btn" id="editAboutBtn">
+                            <i class='bx bx-pencil'></i>
+                        </button>
+                    </div>
+                    <div class="about-content" id="aboutContent">
+                        <div class="about-text" id="aboutText">
+                            Hello! I'm a passionate software developer with over 5 years of experience in full-stack
+                            development.
+                            My expertise lies in building scalable web applications using modern technologies. I love
+                            solving
+                            complex problems and creating user-friendly solutions. When I'm not coding, you can find me
+                            contributing to open-source projects or mentoring junior developers. I believe in continuous
+                            learning
+                            and staying updated with the latest technology trends.
+                        </div>
+                        <div class="about-edit hidden" id="aboutEdit">
+                            <textarea id="aboutTextarea" class="about-textarea"></textarea>
+                            <div class="edit-actions">
+                                <button class="save-btn" id="saveAboutBtn">Save</button>
+                                <button class="cancel-btn" id="cancelAboutBtn">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="content-section">
+                    <h2 class="section-title">
+                        <i class='bx bx-code-alt'></i>
+                        Skills
+                        <button class="add-btn" id="addSkillBtn">
+                            <i class='bx bx-plus'></i> Add Skill
+                        </button>
+                    </h2>
+                    <div class="skill-list" id="skillList">
+                        <div class="skill-item">
+                            <div class="skill-name"></div>
+                            <div class="skill-progress">
+                                <div class="progress-bar" style="width:50%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-section">
+                    <h2 class="section-title">
+                        <i class='bx bx-landscape'></i>
+                        Featured Projects
+                        <button class="add-btn" id="addProjectBtn">
+                            <i class='bx bx-plus'></i> Add Project
+                        </button>
+                    </h2>
+                    <div class="project-grid">
+                        <div class="project-card">
+                            <div class="project-image">
+                                <img src="" alt="nop">
+                            </div>
+                            <div class="project-info">
+                                <h3 class="project-title">not</h3>
+                                <p class="project-desc">pinner eazuta
+                                <p>
+                                <div class="project-links">
+                                    <a href="#" class="project-link">Demo</a>
+                                    <a href="#" class="project-link">Code</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   
+    <!-- Add Skill Modal -->
+    <div id="addSkillModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Add New Skill</h2>
+            <form id="addSkillForm">
+                <div class="form-group">
+                    <label for="skillName">Skill Name:</label>
+                    <input type="text" id="skillName" name="skillName" required>
+                </div>
+                <div class="form-group">
+                    <label for="skillProgress">Progress (%):</label>
+                    <input type="number" id="skillProgress" name="skillProgress" min="0" max="100" required>
+                </div>
+                <button type="submit" class="submit-btn">Add Skill</button>
+            </form>
+        </div>
+    </div>
+    
+
+    <!-- Social Link Edit Modal -->
+    <div id="socialLinkModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Edit Social Link</h2>
+            <form id="socialLinkForm">
+                <div class="form-group">
+                    <label for="socialUrl">URL:</label>
+                    <input type="url" id="socialUrl" name="socialUrl" required>
+                </div>
+                <button type="submit" class="submit-btn">Save</button>
+            </form>
+        </div>
+    </div>
+    <div id="profileEditModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Edit Profile</h2>
+            <form id="profileEditForm" enctype="multipart/form-data">
+                <div class="form-group">
+                    <div class="image-upload-container">
+                        <div class="preview-container">
+                            <img id="imagePreview" src="/api/placeholder/150/150" alt="Profile Preview">
+                            <div class="upload-overlay">
+                                <i class='bx bx-upload'></i>
+                                <span>Upload Image</span>
+                            </div>
+                        </div>
+                        <input type="file" id="profileImage" name="profileImage" accept="image/*" class="hidden-input">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="profileName">Name:</label>
+                    <input type="text" id="profileName" name="name" required value="<%= user.name %>">
+                </div>
+                <div class="form-group">
+                    <label for="profileEmail">Email:</label>
+                    <input type="email" id="profileEmail" name="email" required value="<%= user.email %>">
+                </div>
+                <button type="submit" class="submit-btn">Save Changes</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        // Animate skill bars on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.width = entry.target.getAttribute('data-width');
+                }
+            });
+        });
+
+        document.querySelectorAll('.progress-bar').forEach(bar => {
+            const width = bar.style.width;
+            bar.style.width = '0';
+            bar.setAttribute('data-width', width);
+            observer.observe(bar);
+        });
+
+        let menu = document.querySelector('#menu-icon');
+        let navlist = document.querySelector('.navlist');
+
+        menu.onclick = () => {
+            menu.classList.toggle('bx-x');
+            navlist.classList.toggle('active');
+        }
+
+        window.onscroll = () => {
+            menu.classList.remove('bx-x');
+            navlist.classList.remove('active');
+        }
+
+        // Notification Click Handler
+        const notificationIcon = document.querySelector('.notification-icon');
+        notificationIcon.addEventListener('click', () => {
+            // Add your notification handling logic here
+            alert('Notifications clicked!');
+        });
+
+
+        const editAboutBtn = document.getElementById('editAboutBtn');
+        const aboutText = document.getElementById('aboutText');
+        const aboutEdit = document.getElementById('aboutEdit');
+        const aboutTextarea = document.getElementById('aboutTextarea');
+        const saveAboutBtn = document.getElementById('saveAboutBtn');
+        const cancelAboutBtn = document.getElementById('cancelAboutBtn');
+
+        editAboutBtn.addEventListener('click', () => {
+            aboutTextarea.value = aboutText.textContent.trim();
+            aboutText.classList.add('hidden');
+            aboutEdit.classList.remove('hidden');
+        });
+
+        saveAboutBtn.addEventListener('click', () => {
+            aboutText.textContent = aboutTextarea.value;
+            aboutText.classList.remove('hidden');
+            aboutEdit.classList.add('hidden');
+            // Add AJAX call here to save the content
+        });
+
+        cancelAboutBtn.addEventListener('click', () => {
+            aboutText.classList.remove('hidden');
+            aboutEdit.classList.add('hidden');
+        });
+
+        // Social links editing
+        const socialLinkModal = document.getElementById('socialLinkModal');
+        const socialLinkForm = document.getElementById('socialLinkForm');
+        const socialUrl = document.getElementById('socialUrl');
+        let currentSocial = '';
+
+        document.querySelectorAll('.edit-social-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                currentSocial = btn.dataset.social;
+                const currentLink = document.getElementById(`${currentSocial}Link`).href;
+                socialUrl.value = currentLink;
+                socialLinkModal.style.display = 'block';
+            });
+        });
+
+        socialLinkForm.onsubmit = (e) => {
+            e.preventDefault();
+            document.getElementById(`${currentSocial}Link`).href = socialUrl.value;
+            socialLinkModal.style.display = 'none';
+            // Add AJAX call here to save the social link
+        };
+
+        // Skill modal functionality
+        const addSkillModal = document.getElementById('addSkillModal');
+        const addSkillBtn = document.getElementById('addSkillBtn');
+        const closeBtns = document.getElementsByClassName('close');
+
+        addSkillBtn.onclick = () => addSkillModal.style.display = "block";
+
+        Array.from(closeBtns).forEach(btn => {
+            btn.onclick = function () {
+                addSkillModal.style.display = "none";
+                socialLinkModal.style.display = "none";
+            }
+        });
+
+        window.onclick = function (event) {
+            if (event.target == addSkillModal) {
+                addSkillModal.style.display = "none";
+            }
+            if (event.target == socialLinkModal) {
+                socialLinkModal.style.display = "none";
+            }
+        }
+
+        document.getElementById('addSkillForm').onsubmit = function (e) {
+            e.preventDefault();
+            addSkillModal.style.display = "none";
+        }
+    // Add this to your existing JavaScript
+    const profileEditModal = document.getElementById('profileEditModal');
+    const editProfileBtn = document.querySelector('.edit-profile-btn');
+    const profileEditForm = document.getElementById('profileEditForm');
+    const imagePreview = document.getElementById('imagePreview');
+    const profileImage = document.getElementById('profileImage');
+    const previewContainer = document.querySelector('.preview-container');
+
+    // Open modal when edit button is clicked
+    editProfileBtn.addEventListener('click', () => {
+        profileEditModal.style.display = 'block';
+    });
+
+    // Handle image preview
+    previewContainer.addEventListener('click', () => {
+        profileImage.click();
+    });
+
+    profileImage.addEventListener('change', function(e) {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                imagePreview.src = e.target.result;
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+
+    profileEditForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const formData = new FormData(profileEditForm);
+        
+        try {
+            const response = await fetch('/api/profile/update', {
+                method: 'POST',
+                body: formData
+            });
+            
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                console.error('Error updating profile');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+        
+        profileEditModal.style.display = 'none';
+    });
+
+    window.addEventListener('click', (e) => {
+        if (e.target === profileEditModal) {
+            profileEditModal.style.display = 'none';
+        }
+    });
+
+    profileEditModal.querySelector('.close').addEventListener('click', () => {
+        profileEditModal.style.display = 'none';
+    });
+
+    </script>
+    </body>
+
+    </html>
